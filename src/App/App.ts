@@ -27,6 +27,7 @@ export default function App () {
 		{/* Кнопка створення нотатки */}
         <button className={css.button}>Create note +</button>
   </header>
+  const closeModal = () => setSelectedMovie(null);
   {/* Компонент NoteList */}
 </div>);
 }
