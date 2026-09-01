@@ -9,9 +9,9 @@ import Formik from 'formik';
 
 import css from './App.module.css';
 
-import Modal from '../Modal/Modal';
-import NoteForm from '../NoteForm/NoteForm';
-import NoteList from '../NoteList/NoteList';
+import Modal from '../components/Modal/Modal';
+import NoteForm from '../components/NoteForm/NoteForm';
+import NoteList from '../components/NoteList/NoteList';
 
 import ReactPaginate from 'react-paginate';
 
@@ -19,7 +19,7 @@ const ReactPaginate = (ReactPaginateModule as typeof ReactPaginateModule & {
   default?: typeof ReactPaginateModule;
 }).default ?? ReactPaginateModule;
 
-import SearchBox from '../SearchBox/SearchBox';
+import SearchBox from '../components/SearchBox/SearchBox';
 //import types;
 
 export default function App () {
