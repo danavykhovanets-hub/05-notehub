@@ -1,51 +1,51 @@
-///Інтерфейси, які описують відповіді http-запитів (FetchNotesResponse і т.д.) та параметри функцій, які виконують http-запити 
-
 import axios from "axios";
-import type { Note } from "../types/note.ts";
+import type { Note, NoteTag } from "../types/note";
 
-interface NotesResponse {
-  results: Note[];
-  total_pages: number;
+interface FetchNotesResponse {
+  notes: Note[];
+  totalPages: number;
 }
+
+interface CreateNoteData {
+  title: string;
+  content: string;
+  tag: NoteTag;
+}
+
+const BASE_URL = "https://notehub-public.goit.study/api/notes";
+
+const authHeaders = {
+  Authorization: `Bearer ${import.meta.env.VITE_NOTEHUB_TOKEN}`,
+};
 
 export async function fetchNotes(
-  query: string,
+  search: string,
   page: number
-): Promise<NotesResponse> {
-  const response = await axios.get<NotesResponse>(
-    "https://api.notehub.com/v1/notes",
-    {
-      params: {
-        query,
-        page, 
-      },
-      headers: {
-        Authorization: `Bearer ${import.meta.env.VITE_NOTEHUB_TOKEN}`,
-      },
-    }
-  );
-
-  return response.data; 
-}
-
-export async function createNote(note: Note): Promise<Note> {
-  const response = await axios.post<Note>(
-    "https://api.notehub.com/v1/notes",
-    note,
-    {
-      headers: {
-        Authorization: `Bearer ${import.meta.env.VITE_NOTEHUB_TOKEN}`,
-      },
-    }
-  );
+): Promise<FetchNotesResponse> {
+  const response = await axios.get<FetchNotesResponse>(BASE_URL, {
+    params: {
+      search,
+      page,
+      perPage: 12,
+    },
+    headers: authHeaders,
+  });
 
   return response.data;
 }
 
-export async function deleteNote(noteId: string): Promise<void> {
-  await axios.delete(`https://api.notehub.com/v1/notes/${noteId}`, {
-    headers: {
-      Authorization: `Bearer ${import.meta.env.VITE_NOTEHUB_TOKEN}`,
-    },
+export async function createNote(noteData: CreateNoteData): Promise<Note> {
+  const response = await axios.post<Note>(BASE_URL, noteData, {
+    headers: authHeaders,
   });
+
+  return response.data;
+}
+
+export async function deleteNote(noteId: string): Promise<Note> {
+  const response = await axios.delete<Note>(`${BASE_URL}/${noteId}`, {
+    headers: authHeaders,
+  });
+
+  return response.data;
 }
