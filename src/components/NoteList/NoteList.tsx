@@ -1,21 +1,29 @@
-import css from './SearchBox.module.css';
+import css from "./NoteList.module.css";
+import type { Note } from "../../types/note";
 
-export default function NoteList (){
-    return (
+interface NoteListProps {
+  notes: Note[];
+  onDelete: (id: string) => void;
+}
 
-<ul className={css.list}>
-	{/* Набір елементів списку нотаток */}
-  <li className={css.listItem}>
-    <h2 className={css.title}>Note title</h2>
-    <p className={css.content}>Note content</p>
-    <div className={css.footer}>
-      <span className={css.tag}>Note tag</span>
-      <button className={css.button}>Delete</button>
-    </div>
-  </li>
-</ul>);
-    }
-
-///Для отримання списку нотаток з бекенда, всіх інших запитів по роботі з колекцією нотаток та збереження серверних даних використовуйте TanStack Query.
-
-//Додайте умову, щоб компонент NoteList рендерився лише в тому випадку, якщо в колекції нотаток є хоча б один елемент.
+export default function NoteList({ notes, onDelete }: NoteListProps) {
+  return (
+    <ul className={css.list}>
+      {notes.map((note) => (
+        <li key={note.id} className={css.listItem}>
+          <h2 className={css.title}>{note.title}</h2>
+          <p className={css.content}>{note.content}</p>
+          <div className={css.footer}>
+            <span className={css.tag}>{note.tag}</span>
+            <button
+              className={css.button}
+              onClick={() => onDelete(note.id)}
+            >
+              Delete
+            </button>
+          </div>
+        </li>
+      ))}
+    </ul>
+  );
+}
