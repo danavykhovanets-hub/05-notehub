@@ -1,13 +1,32 @@
-import css from './SearchBox.module.css';
+import ReactPaginateModule from "react-paginate";
+import css from "./Pagination.module.css";
 
-export default function Pagination() {}
+const ReactPaginate = (ReactPaginateModule as typeof ReactPaginateModule & {
+  default?: typeof ReactPaginateModule;
+}).default ?? ReactPaginateModule;
 
-///Реалізуйте компонент Pagination з використанням бібліотеки React Paginate.
+interface PaginationProps {
+  pageCount: number;
+  currentPage: number;
+  onPageChange: (page: number) => void;
+}
 
-///До http-запиту потрібно додати параметри page та perPage. Наприклад:
-
-/// GET https://notehub-public.goit.study/api/notes?page=1&perPage=12
-
-
-
-/// Додайте умову, щоб компонент Pagination рендерився лише в тому випадку, якщо кількість сторінок колекції нотаток більше 1.
+export default function Pagination({
+  pageCount,
+  currentPage,
+  onPageChange,
+}: PaginationProps) {
+  return (
+    <ReactPaginate
+      pageCount={pageCount}
+      pageRangeDisplayed={5}
+      marginPagesDisplayed={1}
+      onPageChange={({ selected }) => onPageChange(selected + 1)}
+      forcePage={currentPage - 1}
+      containerClassName={css.pagination}
+      activeClassName={css.active}
+      nextLabel="→"
+      previousLabel="←"
+    />
+  );
+}

@@ -1,21 +1,18 @@
-import css from './SearchBox.module.css';
+import css from "./SearchBox.module.css";
 
-export default function SearchBox() {
+interface SearchBoxProps {
+  value: string;
+  onChange: (value: string) => void;
+}
+
+export default function SearchBox({ value, onChange }: SearchBoxProps) {
   return (
     <input
       className={css.input}
       type="text"
       placeholder="Search notes"
+      value={value}
+      onChange={(event) => onChange(event.target.value)}
     />
   );
 }
-
- ///параметр search із текстовим значенням для пошуку:
-
-
-
-/// GET https://notehub-public.goit.study/api/notes?search=mysearchtext
-
-
-
-/// Обов’язково зробіть відкладений пошук з use-debounce, щоб не виконувати запит на кожний введений символ. Хук useDebouncedCallback варто використовувати саме в Арр.
